@@ -1,16 +1,10 @@
 import {Component} from '@angular/core';
+import {Member} from "./member";
 
 /**
  * This component is the main (root) component.
  * Can contain a nested tree of components.
  */
-
-// Member class
-export class Member {
-    // Attributes
-    id: number;
-    name: string;
-}
 
 // List of member objects
 const MEMBERS: Member[] = [
@@ -28,8 +22,6 @@ const MEMBERS: Member[] = [
 
                 <h1>{{title}}</h1>
                 
-                <h2>Leden</h2>
-                
                 <!-- MEMBERS LIST-->
                 <ul class="members">
                     <li *ngFor="let member of members" (click)="onSelect(member)" [class.selected]="member === selectedMember">
@@ -37,15 +29,9 @@ const MEMBERS: Member[] = [
                     </li>
                 </ul>
                 
-                <div *ngIf="selectedMember">
-                    <!-- SELECTED MEMBER DETAILS -->
-                    <h2>{{selectedMember.name}} informatie!</h2>
-                    <div><label>id: </label>{{selectedMember.id}}</div>
-                    <div>
-                      <label>name: </label>
-                      <input [(ngModel)]="selectedMember.name" placeholder="name">
-                    </div>
-                </div>
+                <member-detail [member]="selectedMember"></member-detail>
+                
+           
     `,
     styles: [`
       .selected {
@@ -99,7 +85,7 @@ const MEMBERS: Member[] = [
 })
 
 export class AppComponent {
-    title = 'All members';
+    title = 'Alle leden';
     selectedMember: Member;
     members = MEMBERS;
 
