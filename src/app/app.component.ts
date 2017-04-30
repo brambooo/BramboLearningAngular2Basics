@@ -1,20 +1,12 @@
+import {OnInit} from '@angular/core';
 import {Component} from '@angular/core';
 import {Member} from "./member";
+import {MemberService} from './member.service';
 
 /**
  * This component is the main (root) component.
  * Can contain a nested tree of components.
  */
-
-// List of member objects
-const MEMBERS: Member[] = [
-    {id: 2, name: 'Henk'},
-    {id: 3, name: 'Peter'},
-    {id: 4, name: 'Koen'},
-    {id: 5, name: 'Willem'},
-    {id: 6, name: 'Jeffrey'},
-];
-
 
 @Component({
     selector: 'my-app',
@@ -81,13 +73,32 @@ const MEMBERS: Member[] = [
         margin-right: .8em;
         border-radius: 4px 0 0 4px;
       }
-    `]
+    `],
+    // Providers tell Angular to create instances for the given services in the given providers array.
+    // This component and child components in this three can use these service(s).
+    providers: [MemberService]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+    /**
+     * ngOnInit
+     * lifecycle hook is used to initialize the members
+     */
+    ngOnInit(): void {
+        this.getMembers();
+    }
+
     title = 'Alle leden';
     selectedMember: Member;
-    members = MEMBERS;
+    members: Member[];
+
+    // Constructor does nothing, the private memberService property will be automatically inject with a MemberService. Important to create a provider that know which service to inject (see providers property in @Component).
+    constructor(private memberService: MemberService) {}
+
+    getMembers(): void {
+        this.members = this.memberService.getMembers();
+    }
 
     onSelect(member: Member): void {
         this.selectedMember = member;
